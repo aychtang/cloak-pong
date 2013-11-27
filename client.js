@@ -20,11 +20,30 @@ var logUsers = function() {
 	cloak.message('logUsers');
 };
 
+var openCreateUi = function() {
+	var lobbyUI = document.querySelector('.lobby-ui');
+	var createUI = document.querySelector('.create-game-ui');
+	lobbyUI.style.display = 'none';
+	createUI.style.display = 'block';
+};
+
+var hideCreateUi = function() {
+	var lobbyUI = document.querySelector('.lobby-ui');
+	var createUI = document.querySelector('.create-game-ui');
+	lobbyUI.style.display = 'block';
+	createUI.style.display = 'none';
+};
+
 cloak.configure({
 	messages: {
 		registerUsernameResponse: function(data) {
 			data = JSON.parse(data);
 			if (data.success) {
+				var nameUI = document.querySelector('.name-ui');
+				var lobbyUI = document.querySelector('.lobby-ui');
+				nameUI.style.display = 'none';
+				lobbyUI.style.display = 'block';
+
 				cloak.message('joinLobby');
 			}
 		},

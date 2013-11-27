@@ -3,6 +3,14 @@
   <head>
     <meta charset="utf-8">
     <title>Cloak Pong</title>
+    <style>
+      .create-game-ui {
+        display: none;
+      }
+      .lobby-ui {
+        display: none;
+      }
+    </style>
   </head>
   <body>
     <h1>Cloak Pong</h1>
@@ -12,17 +20,20 @@
       <button class="register-name" onclick="registerUsername()">Submit</button>
     </section>
     <section class="lobby-ui">
+      <h2>Users currently online:</h2>
       <div class="user-list"></div>
+      <h2>Games currently online:</h2>
+      <div class="game-list"></div>
+      <button class="toggle-create" onclick="openCreateUi()">Click here to create a game</button>
     </section>
     <section class="create-game-ui">
-      <input type="text" class="game-field">
-      <button class="register-game" onclick="registerGame()"></button>
+      <input type="text" class="game-field" placeholder="room name">
+      <button class="register-game" onclick="registerGame()">Create game</button>
     </section>
 
     <script src="app/bower_components/underscore/underscore-min.js"></script>
     <script src="app/bower_components/socket.io-client/dist/socket.io.min.js"></script>
     <script src="app/lib/cloak-client.min.js"></script>
-
     <script src="client.js"></script>
   </body>
 </html>
