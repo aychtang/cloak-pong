@@ -1,0 +1,28 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>Cloak Pong</title>
+  </head>
+  <body>
+    <h1>Cloak Pong</h1>
+
+    <section class="name-ui">
+      <input class="name-field" type="text" placeholder="username">
+      <button class="register-name" onclick="registerUsername()">Submit</button>
+    </section>
+    <section class="lobby-ui">
+      <div class="user-list"></div>
+    </section>
+    <section class="create-game-ui">
+      <input type="text" class="game-field">
+      <button class="register-game" onclick="registerGame()"></button>
+    </section>
+
+    <script src="app/bower_components/underscore/underscore-min.js"></script>
+    <script src="app/bower_components/socket.io-client/dist/socket.io.min.js"></script>
+    <script src="app/lib/cloak-client.min.js"></script>
+
+    <script src="client.js"></script>
+  </body>
+</html>
