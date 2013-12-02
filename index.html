@@ -4,11 +4,17 @@
     <meta charset="utf-8">
     <title>Cloak Pong</title>
     <style>
+      .toggle-create {
+        margin-top: 40px;
+      }
       .create-game-ui {
         display: none;
       }
       .lobby-ui {
         display: none;
+      }
+      .game-list li, .joinRoom {
+        display: inline-block;
       }
     </style>
   </head>
@@ -27,6 +33,7 @@
       <button class="toggle-create" onclick="openCreateUi()">Click here to create a game</button>
     </section>
     <section class="create-game-ui">
+      <h2>Create a game</h2>
       <input type="text" class="game-field" placeholder="room name">
       <button class="register-game" onclick="registerGame()">Create game</button>
     </section>

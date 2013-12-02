@@ -2,13 +2,19 @@ var cloak = require('cloak');
 
 // Sends a refresh lobby message with current userlist to clients.
 var sendRefreshLobby = function() {
-  this.messageMembers('refreshLobby', JSON.stringify(this.getMembers(true)));
+  var lobby = cloak.getLobby();
+  var responseObject = {
+    members: lobby.getMembers(true),
+    rooms: cloak.getRooms(true)
+  };
+  lobby.messageMembers('refreshLobby', JSON.stringify(responseObject));
 };
 
 cloak.configure({
   port: 8090,
+  defaultRoomSize: 2,
   messages: {
-    'registerUsername': function(username, user) {
+    registerUsername: function(username, user) {
       var success = false;
 
       if (user.name !== username) {
@@ -23,6 +29,16 @@ cloak.configure({
 
       user.message('registerUsernameResponse', JSON.stringify(responseObject));
     },
+    registerGame: function(roomname, user) {
+      var room = cloak.createRoom(roomname);
+      var rooms = cloak.getRooms(true);
+      var responseObject = {
+        roomName: roomname,
+        rooms: rooms
+      };
+      user.message('madeRoom', JSON.stringify(responseObject));
+      sendRefreshLobby();
+    },
     joinLobby : function(arg, user) {
       var success = false;
       var lobby = cloak.getLobby();
@@ -34,7 +50,8 @@ cloak.configure({
 
       var responseObject = {
         members: lobby.getMembers(true),
-        success: success
+        success: success,
+        rooms: cloak.getRooms(true)
       };
 
       user.message('joinLobbyResponse', JSON.stringify(responseObject));
@@ -43,6 +60,11 @@ cloak.configure({
   lobby: {
     newMember: sendRefreshLobby,
     memberLeaves: sendRefreshLobby
+  },
+  room: {
+    init: function() {
+      console.log(this);
+    }
   }
 });
 

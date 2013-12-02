@@ -1,7 +1,21 @@
+var show = function(el) {
+	el.style.display = 'block';
+};
+
+var hide = function(el) {
+	el.style.display = 'none';
+};
+
 var registerUsername = function() {
 	var button = document.querySelector('.register-name');
 	var nameInput = document.querySelector('.name-field');
 	cloak.message('registerUsername', nameInput.value);
+};
+
+var registerGame = function() {
+	var button = document.querySelector('.register-game');
+	var nameInput = document.querySelector('.game-field');
+	cloak.message('registerGame', nameInput.value);
 };
 
 // Expects list of current lobby members
@@ -10,28 +24,41 @@ var renderLobby = function(members) {
 	userListEl.innerHTML = '<ul>'
 	for (var i = 0; i < members.length; i++) {
 		if (members[i].name !== 'Nameless User') {
-			userListEl.innerHTML += '<li>' + members[i].name + '</li>';
+			userListEl.innerHTML += '<div>' +
+			'<li>' + members[i].name + '</li>' +
+			'</div>';
 		}
 	}
 	userListEl.innerHTML += '</ul>';
 };
 
-var logUsers = function() {
-	cloak.message('logUsers');
+var renderRooms = function(rooms) {
+	var gameListEl = document.querySelector('.game-list');
+	gameListEl.innerHTML = '<ul>'
+	for (var i = 0; i < rooms.length; i++) {
+		console.log(rooms[i]);
+		if (rooms[i].name !== 'Nameless User') {
+			gameListEl.innerHTML += '<div>' +
+			'<li>' + rooms[i].name + '</li>' +
+			'<button class="joinRoom">Join Game</button>' +
+			'</div>';
+		}
+	}
+	gameListEl.innerHTML += '</ul>';
 };
 
 var openCreateUi = function() {
 	var lobbyUI = document.querySelector('.lobby-ui');
 	var createUI = document.querySelector('.create-game-ui');
-	lobbyUI.style.display = 'none';
-	createUI.style.display = 'block';
+	hide(lobbyUI);
+	show(createUI);
 };
 
 var hideCreateUi = function() {
 	var lobbyUI = document.querySelector('.lobby-ui');
 	var createUI = document.querySelector('.create-game-ui');
-	lobbyUI.style.display = 'block';
-	createUI.style.display = 'none';
+	show(lobbyUI);
+	hide(createUI);
 };
 
 cloak.configure({
@@ -41,8 +68,8 @@ cloak.configure({
 			if (data.success) {
 				var nameUI = document.querySelector('.name-ui');
 				var lobbyUI = document.querySelector('.lobby-ui');
-				nameUI.style.display = 'none';
-				lobbyUI.style.display = 'block';
+				hide(nameUI);
+				show(lobbyUI);
 
 				cloak.message('joinLobby');
 			}
@@ -51,11 +78,20 @@ cloak.configure({
 			data = JSON.parse(data);
 			if (data.success) {
 				renderLobby(data.members);
+				renderRooms(data.rooms);
 			}
 		},
-		refreshLobby: function(members) {
-			members = JSON.parse(members);
-			renderLobby(members);
+		refreshLobby: function(data) {
+			data = JSON.parse(data);
+			renderLobby(data.members);
+			renderRooms(data.rooms);
+		},
+		madeRoom: function(arg) {
+			var lobbyUI = document.querySelector('.lobby-ui');
+			var createUI = document.querySelector('.create-game-ui');
+			hide(createUI);
+			//eventually show game UI and start.
+			show(lobbyUI);
 		}
 	}
 });
